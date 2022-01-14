@@ -3,12 +3,12 @@
 
 #define MAVLINK_MSG_ID_SUPPORTED_TUNES 401
 
-
+MAVPACKED(
 typedef struct __mavlink_supported_tunes_t {
  uint32_t format; /*<  Bitfield of supported tune formats.*/
  uint8_t target_system; /*<  System ID*/
  uint8_t target_component; /*<  Component ID*/
-} mavlink_supported_tunes_t;
+}) mavlink_supported_tunes_t;
 
 #define MAVLINK_MSG_ID_SUPPORTED_TUNES_LEN 6
 #define MAVLINK_MSG_ID_SUPPORTED_TUNES_MIN_LEN 6
@@ -182,7 +182,7 @@ static inline void mavlink_msg_supported_tunes_send_struct(mavlink_channel_t cha
 
 #if MAVLINK_MSG_ID_SUPPORTED_TUNES_LEN <= MAVLINK_MAX_PAYLOAD_LEN
 /*
-  This variant of _send() can be used to save stack space by re-using
+  This varient of _send() can be used to save stack space by re-using
   memory from the receive buffer.  The caller provides a
   mavlink_message_t which is the size of a full mavlink message. This
   is usually the receive buffer for the channel, and allows a reply to an

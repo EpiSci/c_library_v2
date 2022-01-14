@@ -3,14 +3,14 @@
 
 #define MAVLINK_MSG_ID_TUNNEL 385
 
-
+MAVPACKED(
 typedef struct __mavlink_tunnel_t {
  uint16_t payload_type; /*<  A code that identifies the content of the payload (0 for unknown, which is the default). If this code is less than 32768, it is a 'registered' payload type and the corresponding code should be added to the MAV_TUNNEL_PAYLOAD_TYPE enum. Software creators can register blocks of types as needed. Codes greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.*/
  uint8_t target_system; /*<  System ID (can be 0 for broadcast, but this is discouraged)*/
  uint8_t target_component; /*<  Component ID (can be 0 for broadcast, but this is discouraged)*/
  uint8_t payload_length; /*<  Length of the data transported in payload*/
  uint8_t payload[128]; /*<  Variable length payload. The payload length is defined by payload_length. The entire content of this block is opaque unless you understand the encoding specified by payload_type.*/
-} mavlink_tunnel_t;
+}) mavlink_tunnel_t;
 
 #define MAVLINK_MSG_ID_TUNNEL_LEN 133
 #define MAVLINK_MSG_ID_TUNNEL_MIN_LEN 133
@@ -200,7 +200,7 @@ static inline void mavlink_msg_tunnel_send_struct(mavlink_channel_t chan, const 
 
 #if MAVLINK_MSG_ID_TUNNEL_LEN <= MAVLINK_MAX_PAYLOAD_LEN
 /*
-  This variant of _send() can be used to save stack space by re-using
+  This varient of _send() can be used to save stack space by re-using
   memory from the receive buffer.  The caller provides a
   mavlink_message_t which is the size of a full mavlink message. This
   is usually the receive buffer for the channel, and allows a reply to an

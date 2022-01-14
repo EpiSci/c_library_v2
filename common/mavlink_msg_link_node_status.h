@@ -3,7 +3,7 @@
 
 #define MAVLINK_MSG_ID_LINK_NODE_STATUS 8
 
-
+MAVPACKED(
 typedef struct __mavlink_link_node_status_t {
  uint64_t timestamp; /*< [ms] Timestamp (time since system boot).*/
  uint32_t tx_rate; /*< [bytes/s] Transmit rate*/
@@ -16,7 +16,7 @@ typedef struct __mavlink_link_node_status_t {
  uint16_t rx_overflows; /*< [bytes] Receive buffer overflows. This number wraps around as it reaches UINT16_MAX*/
  uint8_t tx_buf; /*< [%] Remaining free transmit buffer space*/
  uint8_t rx_buf; /*< [%] Remaining free receive buffer space*/
-} mavlink_link_node_status_t;
+}) mavlink_link_node_status_t;
 
 #define MAVLINK_MSG_ID_LINK_NODE_STATUS_LEN 36
 #define MAVLINK_MSG_ID_LINK_NODE_STATUS_MIN_LEN 36
@@ -278,7 +278,7 @@ static inline void mavlink_msg_link_node_status_send_struct(mavlink_channel_t ch
 
 #if MAVLINK_MSG_ID_LINK_NODE_STATUS_LEN <= MAVLINK_MAX_PAYLOAD_LEN
 /*
-  This variant of _send() can be used to save stack space by re-using
+  This varient of _send() can be used to save stack space by re-using
   memory from the receive buffer.  The caller provides a
   mavlink_message_t which is the size of a full mavlink message. This
   is usually the receive buffer for the channel, and allows a reply to an

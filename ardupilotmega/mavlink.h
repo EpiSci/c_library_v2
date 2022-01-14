@@ -1,5 +1,5 @@
 /** @file
- *  @brief MAVLink comm protocol built from ardupilotmega.xml
+ *  @brief MAVLink comm protocol built from bioair.xml
  *  @see http://mavlink.org
  */
 #pragma once
@@ -29,6 +29,6 @@
 #endif
 
 #include "version.h"
-#include "ardupilotmega.h"
+#include "bioair.h"
 
 #endif // MAVLINK_H
