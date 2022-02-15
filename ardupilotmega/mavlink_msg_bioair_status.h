@@ -5,41 +5,35 @@
 
 
 typedef struct __mavlink_bioair_status_t {
- uint8_t target_system; /*<  System ID*/
- uint8_t target_component; /*<  Component ID*/
- uint8_t node_id; /*<  Node ID*/
- uint8_t node_state; /*<  Node State*/
+ uint16_t message_type; /*<  A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.*/
+ uint8_t payload[249]; /*<  Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.*/
 } mavlink_bioair_status_t;
 
-#define MAVLINK_MSG_ID_BIOAIR_STATUS_LEN 4
-#define MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN 4
-#define MAVLINK_MSG_ID_20005_LEN 4
-#define MAVLINK_MSG_ID_20005_MIN_LEN 4
+#define MAVLINK_MSG_ID_BIOAIR_STATUS_LEN 251
+#define MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN 251
+#define MAVLINK_MSG_ID_20005_LEN 251
+#define MAVLINK_MSG_ID_20005_MIN_LEN 251
 
-#define MAVLINK_MSG_ID_BIOAIR_STATUS_CRC 24
-#define MAVLINK_MSG_ID_20005_CRC 24
+#define MAVLINK_MSG_ID_BIOAIR_STATUS_CRC 138
+#define MAVLINK_MSG_ID_20005_CRC 138
 
-
+#define MAVLINK_MSG_BIOAIR_STATUS_FIELD_PAYLOAD_LEN 249
 
 #if MAVLINK_COMMAND_24BIT
 #define MAVLINK_MESSAGE_INFO_BIOAIR_STATUS { \
     20005, \
     "BIOAIR_STATUS", \
-    4, \
-    {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_bioair_status_t, target_system) }, \
-         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_bioair_status_t, target_component) }, \
-         { "node_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_bioair_status_t, node_id) }, \
-         { "node_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_bioair_status_t, node_state) }, \
+    2, \
+    {  { "message_type", NULL, MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_bioair_status_t, message_type) }, \
+         { "payload", NULL, MAVLINK_TYPE_UINT8_T, 249, 2, offsetof(mavlink_bioair_status_t, payload) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_BIOAIR_STATUS { \
     "BIOAIR_STATUS", \
-    4, \
-    {  { "target_system", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_bioair_status_t, target_system) }, \
-         { "target_component", NULL, MAVLINK_TYPE_UINT8_T, 0, 1, offsetof(mavlink_bioair_status_t, target_component) }, \
-         { "node_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_bioair_status_t, node_id) }, \
-         { "node_state", NULL, MAVLINK_TYPE_UINT8_T, 0, 3, offsetof(mavlink_bioair_status_t, node_state) }, \
+    2, \
+    {  { "message_type", NULL, MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_bioair_status_t, message_type) }, \
+         { "payload", NULL, MAVLINK_TYPE_UINT8_T, 249, 2, offsetof(mavlink_bioair_status_t, payload) }, \
          } \
 }
 #endif
@@ -50,30 +44,22 @@ typedef struct __mavlink_bioair_status_t {
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param target_system  System ID
- * @param target_component  Component ID
- * @param node_id  Node ID
- * @param node_state  Node State
+ * @param message_type  A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
+ * @param payload  Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_bioair_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint8_t target_system, uint8_t target_component, uint8_t node_id, uint8_t node_state)
+                               uint16_t message_type, const uint8_t *payload)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BIOAIR_STATUS_LEN];
-    _mav_put_uint8_t(buf, 0, target_system);
-    _mav_put_uint8_t(buf, 1, target_component);
-    _mav_put_uint8_t(buf, 2, node_id);
-    _mav_put_uint8_t(buf, 3, node_state);
-
+    _mav_put_uint16_t(buf, 0, message_type);
+    _mav_put_uint8_t_array(buf, 2, payload, 249);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN);
 #else
     mavlink_bioair_status_t packet;
-    packet.target_system = target_system;
-    packet.target_component = target_component;
-    packet.node_id = node_id;
-    packet.node_state = node_state;
-
+    packet.message_type = message_type;
+    mav_array_memcpy(packet.payload, payload, sizeof(uint8_t)*249);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN);
 #endif
 
@@ -87,31 +73,23 @@ static inline uint16_t mavlink_msg_bioair_status_pack(uint8_t system_id, uint8_t
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param target_system  System ID
- * @param target_component  Component ID
- * @param node_id  Node ID
- * @param node_state  Node State
+ * @param message_type  A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
+ * @param payload  Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_bioair_status_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint8_t target_system,uint8_t target_component,uint8_t node_id,uint8_t node_state)
+                                   uint16_t message_type,const uint8_t *payload)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BIOAIR_STATUS_LEN];
-    _mav_put_uint8_t(buf, 0, target_system);
-    _mav_put_uint8_t(buf, 1, target_component);
-    _mav_put_uint8_t(buf, 2, node_id);
-    _mav_put_uint8_t(buf, 3, node_state);
-
+    _mav_put_uint16_t(buf, 0, message_type);
+    _mav_put_uint8_t_array(buf, 2, payload, 249);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN);
 #else
     mavlink_bioair_status_t packet;
-    packet.target_system = target_system;
-    packet.target_component = target_component;
-    packet.node_id = node_id;
-    packet.node_state = node_state;
-
+    packet.message_type = message_type;
+    mav_array_memcpy(packet.payload, payload, sizeof(uint8_t)*249);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN);
 #endif
 
@@ -129,7 +107,7 @@ static inline uint16_t mavlink_msg_bioair_status_pack_chan(uint8_t system_id, ui
  */
 static inline uint16_t mavlink_msg_bioair_status_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_bioair_status_t* bioair_status)
 {
-    return mavlink_msg_bioair_status_pack(system_id, component_id, msg, bioair_status->target_system, bioair_status->target_component, bioair_status->node_id, bioair_status->node_state);
+    return mavlink_msg_bioair_status_pack(system_id, component_id, msg, bioair_status->message_type, bioair_status->payload);
 }
 
 /**
@@ -143,37 +121,29 @@ static inline uint16_t mavlink_msg_bioair_status_encode(uint8_t system_id, uint8
  */
 static inline uint16_t mavlink_msg_bioair_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_bioair_status_t* bioair_status)
 {
-    return mavlink_msg_bioair_status_pack_chan(system_id, component_id, chan, msg, bioair_status->target_system, bioair_status->target_component, bioair_status->node_id, bioair_status->node_state);
+    return mavlink_msg_bioair_status_pack_chan(system_id, component_id, chan, msg, bioair_status->message_type, bioair_status->payload);
 }
 
 /**
  * @brief Send a bioair_status message
  * @param chan MAVLink channel to send the message
  *
- * @param target_system  System ID
- * @param target_component  Component ID
- * @param node_id  Node ID
- * @param node_state  Node State
+ * @param message_type  A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
+ * @param payload  Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_bioair_status_send(mavlink_channel_t chan, uint8_t target_system, uint8_t target_component, uint8_t node_id, uint8_t node_state)
+static inline void mavlink_msg_bioair_status_send(mavlink_channel_t chan, uint16_t message_type, const uint8_t *payload)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BIOAIR_STATUS_LEN];
-    _mav_put_uint8_t(buf, 0, target_system);
-    _mav_put_uint8_t(buf, 1, target_component);
-    _mav_put_uint8_t(buf, 2, node_id);
-    _mav_put_uint8_t(buf, 3, node_state);
-
+    _mav_put_uint16_t(buf, 0, message_type);
+    _mav_put_uint8_t_array(buf, 2, payload, 249);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BIOAIR_STATUS, buf, MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_CRC);
 #else
     mavlink_bioair_status_t packet;
-    packet.target_system = target_system;
-    packet.target_component = target_component;
-    packet.node_id = node_id;
-    packet.node_state = node_state;
-
+    packet.message_type = message_type;
+    mav_array_memcpy(packet.payload, payload, sizeof(uint8_t)*249);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BIOAIR_STATUS, (const char *)&packet, MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_CRC);
 #endif
 }
@@ -186,7 +156,7 @@ static inline void mavlink_msg_bioair_status_send(mavlink_channel_t chan, uint8_
 static inline void mavlink_msg_bioair_status_send_struct(mavlink_channel_t chan, const mavlink_bioair_status_t* bioair_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_bioair_status_send(chan, bioair_status->target_system, bioair_status->target_component, bioair_status->node_id, bioair_status->node_state);
+    mavlink_msg_bioair_status_send(chan, bioair_status->message_type, bioair_status->payload);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BIOAIR_STATUS, (const char *)bioair_status, MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_CRC);
 #endif
@@ -200,23 +170,17 @@ static inline void mavlink_msg_bioair_status_send_struct(mavlink_channel_t chan,
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_bioair_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t target_system, uint8_t target_component, uint8_t node_id, uint8_t node_state)
+static inline void mavlink_msg_bioair_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint16_t message_type, const uint8_t *payload)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
-    _mav_put_uint8_t(buf, 0, target_system);
-    _mav_put_uint8_t(buf, 1, target_component);
-    _mav_put_uint8_t(buf, 2, node_id);
-    _mav_put_uint8_t(buf, 3, node_state);
-
+    _mav_put_uint16_t(buf, 0, message_type);
+    _mav_put_uint8_t_array(buf, 2, payload, 249);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BIOAIR_STATUS, buf, MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_CRC);
 #else
     mavlink_bioair_status_t *packet = (mavlink_bioair_status_t *)msgbuf;
-    packet->target_system = target_system;
-    packet->target_component = target_component;
-    packet->node_id = node_id;
-    packet->node_state = node_state;
-
+    packet->message_type = message_type;
+    mav_array_memcpy(packet->payload, payload, sizeof(uint8_t)*249);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BIOAIR_STATUS, (const char *)packet, MAVLINK_MSG_ID_BIOAIR_STATUS_MIN_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN, MAVLINK_MSG_ID_BIOAIR_STATUS_CRC);
 #endif
 }
@@ -228,43 +192,23 @@ static inline void mavlink_msg_bioair_status_send_buf(mavlink_message_t *msgbuf,
 
 
 /**
- * @brief Get field target_system from bioair_status message
+ * @brief Get field message_type from bioair_status message
  *
- * @return  System ID
+ * @return  A code that identifies the software component that understands this message (analogous to USB device classes or mime type strings). If this code is less than 32768, it is considered a 'registered' protocol extension and the corresponding entry should be added to https://github.com/mavlink/mavlink/definition_files/extension_message_ids.xml. Software creators can register blocks of message IDs as needed (useful for GCS specific metadata, etc...). Message_types greater than 32767 are considered local experiments and should not be checked in to any widely distributed codebase.
  */
-static inline uint8_t mavlink_msg_bioair_status_get_target_system(const mavlink_message_t* msg)
+static inline uint16_t mavlink_msg_bioair_status_get_message_type(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint8_t(msg,  0);
+    return _MAV_RETURN_uint16_t(msg,  0);
 }
 
 /**
- * @brief Get field target_component from bioair_status message
+ * @brief Get field payload from bioair_status message
  *
- * @return  Component ID
+ * @return  Variable length payload. The length must be encoded in the payload as part of the message_type protocol, e.g. by including the length as payload data, or by terminating the payload data with a non-zero marker. This is required in order to reconstruct zero-terminated payloads that are (or otherwise would be) trimmed by MAVLink 2 empty-byte truncation. The entire content of the payload block is opaque unless you understand the encoding message_type. The particular encoding used can be extension specific and might not always be documented as part of the MAVLink specification.
  */
-static inline uint8_t mavlink_msg_bioair_status_get_target_component(const mavlink_message_t* msg)
+static inline uint16_t mavlink_msg_bioair_status_get_payload(const mavlink_message_t* msg, uint8_t *payload)
 {
-    return _MAV_RETURN_uint8_t(msg,  1);
-}
-
-/**
- * @brief Get field node_id from bioair_status message
- *
- * @return  Node ID
- */
-static inline uint8_t mavlink_msg_bioair_status_get_node_id(const mavlink_message_t* msg)
-{
-    return _MAV_RETURN_uint8_t(msg,  2);
-}
-
-/**
- * @brief Get field node_state from bioair_status message
- *
- * @return  Node State
- */
-static inline uint8_t mavlink_msg_bioair_status_get_node_state(const mavlink_message_t* msg)
-{
-    return _MAV_RETURN_uint8_t(msg,  3);
+    return _MAV_RETURN_uint8_t_array(msg, payload, 249,  2);
 }
 
 /**
@@ -276,10 +220,8 @@ static inline uint8_t mavlink_msg_bioair_status_get_node_state(const mavlink_mes
 static inline void mavlink_msg_bioair_status_decode(const mavlink_message_t* msg, mavlink_bioair_status_t* bioair_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    bioair_status->target_system = mavlink_msg_bioair_status_get_target_system(msg);
-    bioair_status->target_component = mavlink_msg_bioair_status_get_target_component(msg);
-    bioair_status->node_id = mavlink_msg_bioair_status_get_node_id(msg);
-    bioair_status->node_state = mavlink_msg_bioair_status_get_node_state(msg);
+    bioair_status->message_type = mavlink_msg_bioair_status_get_message_type(msg);
+    mavlink_msg_bioair_status_get_payload(msg, bioair_status->payload);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_BIOAIR_STATUS_LEN? msg->len : MAVLINK_MSG_ID_BIOAIR_STATUS_LEN;
         memset(bioair_status, 0, MAVLINK_MSG_ID_BIOAIR_STATUS_LEN);
