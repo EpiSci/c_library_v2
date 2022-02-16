@@ -283,17 +283,13 @@ static void mavlink_test_bioair_heartbeat(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_bioair_heartbeat_t packet_in = {
-        5,72,139,206,17,84
+        { 963497464, 963497465, 963497466, 963497467, 963497468 },65
     };
     mavlink_bioair_heartbeat_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.numOfNode = packet_in.numOfNode;
-        packet1.node1 = packet_in.node1;
-        packet1.node2 = packet_in.node2;
-        packet1.node3 = packet_in.node3;
-        packet1.node4 = packet_in.node4;
-        packet1.node5 = packet_in.node5;
         
+        mav_array_memcpy(packet1.node1, packet_in.node1, sizeof(uint32_t)*5);
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
         if (status->flags & MAVLINK_STATUS_FLAG_OUT_MAVLINK1) {
@@ -307,12 +303,12 @@ static void mavlink_test_bioair_heartbeat(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_bioair_heartbeat_pack(system_id, component_id, &msg , packet1.numOfNode , packet1.node1 , packet1.node2 , packet1.node3 , packet1.node4 , packet1.node5 );
+    mavlink_msg_bioair_heartbeat_pack(system_id, component_id, &msg , packet1.numOfNode , packet1.node1 );
     mavlink_msg_bioair_heartbeat_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_bioair_heartbeat_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.numOfNode , packet1.node1 , packet1.node2 , packet1.node3 , packet1.node4 , packet1.node5 );
+    mavlink_msg_bioair_heartbeat_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.numOfNode , packet1.node1 );
     mavlink_msg_bioair_heartbeat_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -325,7 +321,7 @@ static void mavlink_test_bioair_heartbeat(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_bioair_heartbeat_send(MAVLINK_COMM_1 , packet1.numOfNode , packet1.node1 , packet1.node2 , packet1.node3 , packet1.node4 , packet1.node5 );
+    mavlink_msg_bioair_heartbeat_send(MAVLINK_COMM_1 , packet1.numOfNode , packet1.node1 );
     mavlink_msg_bioair_heartbeat_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
